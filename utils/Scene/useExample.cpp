@@ -4,7 +4,7 @@ using namespace std;
 
 int main() {
     try {
-        Scene scene = SceneJsonLoader::loadFile("sampleScene.json");
+        Scene scene = SceneJsonLoader::loadFile("../input/sampleScene.json");
         
         cerr << "Loaded " << scene.objects.size() << " objects\n";
         cerr << "Loaded " << scene.lightList.size() << " lights\n";

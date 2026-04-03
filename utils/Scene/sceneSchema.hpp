@@ -1,5 +1,7 @@
-#include "../Vetor.h"
-#include "../Ponto.h"
+#pragma once
+
+#include "../../src/Vetor.h"
+#include "../../src/Ponto.h"
 #include <string>
 #include <vector>
 #include <map>

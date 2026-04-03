@@ -101,29 +101,6 @@
       "normal": [1, 0, 0],
       "material": "parede_vermelha"
     },
-
-    {
-      "name": "Bloco Alto (Laranja)",
-      "type": "mesh",
-      "path": "cubo.obj",
-      "material": "bloco_laranja",
-      "transform": [
-        { "type": "scaling", "factors": [82.5, 165, 82.5] },
-        { "type": "rotation", "angle": [0, 18, 0] },
-        { "type": "translation", "vector": [180, 165, 250] }
-      ]
-    },
-    {
-      "name": "Bloco Baixo (Azul)",
-      "type": "mesh",
-      "path": "cubo.obj",
-      "material": "bloco_azul",
-      "transform": [
-        { "type": "scaling", "factors": [82.5, 82.5, 82.5] },
-        { "type": "rotation", "angle": [0, -20, 0]},
-        { "type": "translation", "vector": [370, 82.5, 150] }
-      ]
-    },
     {
       "name": "Esfera de Vidro",
       "type": "sphere",
