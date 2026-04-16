@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cmath>
 #include "src/Ponto.h"
 #include "src/Vetor.h"
 using namespace std;
