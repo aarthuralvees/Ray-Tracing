@@ -32,4 +32,6 @@ static void ray_at() {
 
     Ponto atNeg = r.at(-1.0);   // behind origin
     CHECK(atNeg.getX() == -1);
+    CHECK(atNeg.getY() == 0);
+    CHECK(atNeg.getZ() == 0);
 }
