@@ -1,6 +1,5 @@
 #pragma once
 #include <iostream>
-#include <cmath>
 
 namespace tests {
     inline int _passed = 0, _failed = 0;
@@ -18,8 +17,10 @@ namespace tests {
 inline void run_test(const char* name, void(*fn)()) {
     tests::_current = name;
     fn();
+    tests::_current = "";
 }
 
+// Write to stderr so test output does not mix with the PPM image on stdout.
 inline void report_tests() {
     int total = tests::_passed + tests::_failed;
     std::cerr << "\n--- " << total << " checks: "
