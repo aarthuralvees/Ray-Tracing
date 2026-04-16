@@ -1,4 +1,6 @@
-#pragma once
+#ifndef CAMERAHEADER
+#define CAMERAHEADER
+
 #include "Ponto.h"
 #include "Vetor.h"
 
@@ -33,3 +35,5 @@ public:
         return ray(C, unit_vector(pixel_point - C));
     }
 };
+
+#endif
