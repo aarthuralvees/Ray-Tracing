@@ -49,3 +49,23 @@ static void camera_ray_normalized() {
     CHECK(fabs(cam.getRay(0, 3).direction().length() - 1.0) < 1e-9);
     CHECK(fabs(cam.getRay(3, 3).direction().length() - 1.0) < 1e-9);
 }
+
+static void camera_ray_corner_directions() {
+    // Verifies the actual pixel mapping formula for a non-center pixel.
+    // C=(0,0,5), M=(0,0,0), d=1, hres=4, vres=4
+    // W=(0,0,1), U=(1,0,0), V=(0,1,0)
+    // screen_center = (0,0,4)
+    // pixel (0,0) top-left:
+    //   U-offset = -0.5 + 0.5/4 = -0.375
+    //   V-offset =  0.5 - 0.5/4 =  0.375
+    //   pixel_point = (-0.375, 0.375, 4)
+    //   raw direction = pixel_point - C = (-0.375, 0.375, -1)
+    //   length = sqrt(0.375^2 + 0.375^2 + 1) = sqrt(1.28125)
+    Camera cam(Ponto(0,0,5), Ponto(0,0,0), Vetor(0,1,0), 1.0, 4, 4);
+    ray r = cam.getRay(0, 0);
+
+    double len = sqrt(0.375*0.375 + 0.375*0.375 + 1.0);
+    CHECK(fabs(r.direction().getX() - (-0.375 / len)) < 1e-9);
+    CHECK(fabs(r.direction().getY() - ( 0.375 / len)) < 1e-9);
+    CHECK(fabs(r.direction().getZ() - (-1.0   / len)) < 1e-9);
+}
