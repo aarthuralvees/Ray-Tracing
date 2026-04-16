@@ -6,14 +6,19 @@ using namespace std;
 #ifdef RUN_TESTS
 #include "tests/test_vetor.h"
 #include "tests/test_ponto.h"
+#include "tests/test_camera.h"
 
 static void run_all_tests() {
-    run_test("vetor_arithmetic",  vetor_arithmetic);
-    run_test("vetor_length",      vetor_length);
-    run_test("vetor_dot_cross",   vetor_dot_cross);
-    run_test("vetor_unit_vector", vetor_unit_vector);
-    run_test("ponto_arithmetic",  ponto_arithmetic);
-    run_test("ray_at",            ray_at);
+    run_test("vetor_arithmetic",          vetor_arithmetic);
+    run_test("vetor_length",              vetor_length);
+    run_test("vetor_dot_cross",           vetor_dot_cross);
+    run_test("vetor_unit_vector",         vetor_unit_vector);
+    run_test("ponto_arithmetic",          ponto_arithmetic);
+    run_test("ray_at",                    ray_at);
+    run_test("camera_basis",              camera_basis);
+    run_test("camera_ray_center",         camera_ray_center);
+    run_test("camera_ray_normalized",     camera_ray_normalized);
+    run_test("camera_ray_corner_directions", camera_ray_corner_directions);
     report_tests();
 }
 #endif
