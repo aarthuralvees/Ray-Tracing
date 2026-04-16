@@ -34,8 +34,8 @@ static void vetor_arithmetic() {
 
 static void vetor_length() {
     Vetor v(3, 4, 0);
-    CHECK(v.length() == 5.0);
-    CHECK(v.length_squared() == 25.0);
+    CHECK(fabs(v.length() - 5.0) < 1e-9);
+    CHECK(fabs(v.length_squared() - 25.0) < 1e-9);
 
     Vetor zero(0, 0, 0);
     CHECK(zero.length() == 0.0);
@@ -60,4 +60,5 @@ static void vetor_unit_vector() {
     CHECK(fabs(n.length() - 1.0) < 1e-9);
     CHECK(fabs(n.getX() - 0.6) < 1e-9);
     CHECK(fabs(n.getY() - 0.8) < 1e-9);
+    CHECK(fabs(n.getZ() - 0.0) < 1e-9);
 }
