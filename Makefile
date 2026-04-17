@@ -10,7 +10,7 @@ test: main.cpp
 	$(CXX) $(CXXFLAGS) -DRUN_TESTS main.cpp -o test_runner
 	./test_runner
 
-image.ppm: render
+image: render
 	./render > image.ppm
 
 clean:
