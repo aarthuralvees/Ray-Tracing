@@ -1,5 +1,6 @@
 #pragma once
 #include "../src/Ponto.h"
+#include "../src/Ray.h"
 #include "TestRunner.h"
 
 static void ponto_arithmetic() {
