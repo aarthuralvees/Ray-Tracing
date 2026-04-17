@@ -3,6 +3,7 @@
 
 #include "Ponto.h"
 #include "Vetor.h"
+#include "Ray.h"
 
 class Camera {
 public:
@@ -14,13 +15,10 @@ public:
     int hres;
     int vres;
 
-    // Computed orthonormal basis
-    Vetor W;   // unit_vector(C - M)        — points away from scene
-    Vetor U;   // unit_vector(cross(Vup,W)) — points right
-    Vetor V;   // cross(W, U)               — corrected up (already unit)
+    Vetor W;   
+    Vetor U;   
+    Vetor V;   
 
-    // Precondition: Vup must not be parallel to (C - M).
-    // If Vup || W, cross(Vup, W) is the zero vector and U/V become NaN.
     Camera(Ponto C, Ponto M, Vetor Vup, double d, int hres, int vres)
         : C(C), M(M), Vup(Vup), d(d), hres(hres), vres(vres)
     {

@@ -11,15 +11,19 @@ public:
     Vetor operator+(const Vetor& v) const { 
         return Vetor(x + v.x, y + v.y, z + v.z); 
     }
+    
     Vetor operator-(const Vetor& v) const {
         return Vetor(x - v.x, y - v.y, z - v.z);
     }
+
     Vetor operator-() const { 
         return Vetor(-x, -y, -z); 
     }
+
     Vetor operator*(double t) const {
         return Vetor(x * t, y * t, z * t);
     }
+
     Vetor operator/(double t) const {
         return Vetor(x / t, y / t, z / t);
     }
@@ -35,6 +39,7 @@ public:
     double length() const {
         return std::sqrt(length_squared());
     }
+
     double length_squared() const {
         return x*x + y*y + z*z;
     }
@@ -80,7 +85,7 @@ inline void write_color(std::ostream& out, const color& pixel_color) {
 
     int ir = int(255.999 * r);
     int ig = int(255.999 * g);
-    int ib = int(255.999 * b);
+    int ib = int(255.999 * b);  
 
     out << ir << ' ' << ig << ' ' << ib << '\n';
 }

@@ -43,12 +43,12 @@ static void vetor_length() {
 
 static void vetor_dot_cross() {
     Vetor a(1, 2, 3), b(4, 5, 6);
-    CHECK(dot(a, b) == 32.0);   // 1*4 + 2*5 + 3*6
+    CHECK(dot(a, b) == 32.0);   
 
     Vetor x(1, 0, 0), y(0, 1, 0);
-    CHECK(dot(x, y) == 0.0);    // perpendicular vectors
+    CHECK(dot(x, y) == 0.0);    
 
-    Vetor z = cross(x, y);      // right-hand rule: x × y = +z
+    Vetor z = cross(x, y);      
     CHECK(z.getX() == 0);
     CHECK(z.getY() == 0);
     CHECK(z.getZ() == 1);
