@@ -11,7 +11,7 @@ test: main.cpp
 	./test_runner
 
 image.ppm: render
-	render > image.ppm
+	./render > image.ppm
 
 clean:
 	rm -f render test_runner image.ppm
