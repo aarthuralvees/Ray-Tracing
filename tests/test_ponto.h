@@ -19,7 +19,7 @@ static void ponto_arithmetic() {
 }
 
 static void ray_at() {
-    ray r(Ponto(0, 0, 0), Vetor(1, 0, 0));
+    Ray r(Ponto(0, 0, 0), Vetor(1, 0, 0));
 
     Ponto at0 = r.at(0.0);      // origin at t=0
     CHECK(at0.getX() == 0);
