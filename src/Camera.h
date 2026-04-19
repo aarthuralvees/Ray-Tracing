@@ -23,7 +23,7 @@ public:
         : C(C), M(M), Vup(Vup), d(d), hres(hres), vres(vres)
     {
         W = unit_vector(C - M);
-        U = unit_vector(cross(Vup, W));
+        U = unit_vector(cross(W, Vup));
         V = cross(W, U);
     }
 
