@@ -30,7 +30,7 @@ static void camera_ray_center() {
     //             = screen_center + U*0 + V*0 = (0,0,4)
     // direction = unit((0,0,4)−(0,0,5)) = unit(0,0,−1) = (0,0,−1) = −W
     Camera cam(Ponto(0,0,5), Ponto(0,0,0), Vetor(0,1,0), 1.0, 1, 1);
-    ray r = cam.getRay(0, 0);
+    Ray r = cam.getRay(0, 0);
 
     CHECK(fabs(r.origin().getX() - 0.0) < 1e-9);
     CHECK(fabs(r.origin().getY() - 0.0) < 1e-9);
@@ -62,7 +62,7 @@ static void camera_ray_corner_directions() {
     //   raw direction = pixel_point - C = (-0.375, 0.375, -1)
     //   length = sqrt(0.375^2 + 0.375^2 + 1) = sqrt(1.28125)
     Camera cam(Ponto(0,0,5), Ponto(0,0,0), Vetor(0,1,0), 1.0, 4, 4);
-    ray r = cam.getRay(0, 0);
+    Ray r = cam.getRay(0, 0);
 
     double len = sqrt(0.375*0.375 + 0.375*0.375 + 1.0);
     CHECK(fabs(r.direction().getX() - (-0.375 / len)) < 1e-9);
