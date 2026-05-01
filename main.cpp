@@ -64,6 +64,10 @@ int main() {
             Vetor normal = objData.getVetor("normal");
             mundo.adicionar(make_unique<Plano>(p0, normal, objColor));
         }
+        else if (objData.objType == "mesh") {
+            std::string objPath = resolvePath(scenePath, objData.getProperty("path"));
+            mundo.adicionar(make_unique<MalhaTriangulos>(objPath, objColor, Matriz4::fromTransforms(objData.transforms)));
+        }
     }
 
     std::cout << "P3\n" << cam.hres << ' ' << cam.vres << "\n255\n";
