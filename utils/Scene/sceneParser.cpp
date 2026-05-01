@@ -177,7 +177,8 @@ private:
 
         if (node.contains("lookfrom")) cam.lookfrom = parsePoint(node["lookfrom"], "camera.lookfrom");
         if (node.contains("lookat"))   cam.lookat   = parsePoint(node["lookat"],   "camera.lookat");
-        if (node.contains("vup"))      cam.upVector  = parseVector(node["vup"],     "camera.vup");
+        if (node.contains("upVector")) cam.upVector = parseVector(node["upVector"], "camera.upVector");
+        if (node.contains("vup"))      cam.upVector = parseVector(node["vup"],      "camera.vup");
 
         return cam;
     }
@@ -261,12 +262,13 @@ private:
         if (node.contains("name") && node["name"].isString()) obj.otherProperties["name"] = node["name"].asString();
         if (node.contains("material")) obj.material = resolveMaterial(node["material"], materials);
         if (node.contains("transform")) obj.transforms = parseTransforms(node["transform"]);
+        if (node.contains("transforms")) obj.transforms = parseTransforms(node["transforms"]);
         if (node.contains("relativePos")) obj.relativePos = parsePoint(node["relativePos"], "object.relativePos");
         if (node.contains("type") && node["type"].isString()) obj.objType = node["type"].asString();
         else throw std::runtime_error("Object missing required field: type");
 
         for (const auto& [key, val] : node.asObject()) {
-            if (key == "type" || key == "material" || key == "transform" || key == "name" || key == "relativePos") continue;
+            if (key == "type" || key == "material" || key == "transform" || key == "transforms" || key == "name" || key == "relativePos") continue;
 
 
             if (val.isNumber())      obj.numericData[key] = val.asNumber();
