@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <memory>
 #include "src/Ponto.h"
@@ -8,6 +9,7 @@
 #include "src/Objeto.h"
 #include "src/Esfera.h"
 #include "src/Plano.h"
+#include "src/MalhaTriangulos.h"
 #include "src/Cena.h"
 
 #include "utils/Scene/sceneParser.cpp" 
@@ -18,6 +20,7 @@ using namespace std;
 #include "tests/test_vetor.h"
 #include "tests/test_ponto.h"
 #include "tests/test_camera.h"
+#include "tests/test_malha.h"
 
 static void run_all_tests() {
     run_test("vetor_arithmetic",          vetor_arithmetic);
@@ -30,18 +33,47 @@ static void run_all_tests() {
     run_test("camera_ray_center",         camera_ray_center);
     run_test("camera_ray_normalized",     camera_ray_normalized);
     run_test("camera_ray_corner_directions", camera_ray_corner_directions);
+    run_test("matriz_transform_point_and_vector", matriz_transform_point_and_vector);
+    run_test("matriz_rotation_z_degrees", matriz_rotation_z_degrees);
+    run_test("matriz_transform_order",    matriz_transform_order);
+    run_test("malha_loads_obj_and_computes_normals", malha_loads_obj_and_computes_normals);
+    run_test("malha_hits_triangle",       malha_hits_triangle);
+    run_test("malha_applies_transform_before_hit", malha_applies_transform_before_hit);
+    run_test("scene_parser_accepts_transforms_key", scene_parser_accepts_transforms_key);
+    run_test("scene_parser_reads_upvector_key", scene_parser_reads_upvector_key);
     report_tests();
 }
 #endif
 
+static std::string dirnameOf(const std::string& path) {
+    const size_t pos = path.find_last_of("/\\");
+    if (pos == std::string::npos) return ".";
+    return path.substr(0, pos);
+}
 
-int main() {
+static bool fileExists(const std::string& path) {
+    std::ifstream file(path);
+    return file.good();
+}
+
+static std::string resolvePath(const std::string& baseFile, const std::string& path) {
+    if (path.empty()) return path;
+    if (path[0] == '/' || fileExists(path)) return path;
+
+    const std::string relativeToScene = dirnameOf(baseFile) + "/" + path;
+    if (fileExists(relativeToScene)) return relativeToScene;
+
+    return path;
+}
+
+int main(int argc, char** argv) {
 #ifdef RUN_TESTS
     run_all_tests();
     return tests::_failed > 0 ? 1 : 0;
 #endif
 
-    SceneData scene_data = SceneJsonLoader::loadFile("utils/input/sampleScene.json");
+    const std::string scenePath = argc > 1 ? argv[1] : "utils/input/sampleScene.json";
+    SceneData scene_data = SceneJsonLoader::loadFile(scenePath);
 
     Ponto lookfrom = scene_data.camera.lookfrom;
     Ponto lookat   = scene_data.camera.lookat;
