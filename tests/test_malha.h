@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <filesystem>
 #include <fstream>
 #include <string>
 
@@ -12,7 +13,7 @@ static bool close_double(double a, double b) {
 }
 
 static std::string write_test_obj(const std::string& filename) {
-    const std::string path = "/tmp/" + filename;
+    const std::string path = (std::filesystem::temp_directory_path() / filename).string();
     std::ofstream out(path);
     out << "v 0 0 0\n";
     out << "v 1 0 0\n";

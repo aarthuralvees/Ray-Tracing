@@ -27,6 +27,8 @@ static void run_all_tests() {
     run_test("vetor_length",              vetor_length);
     run_test("vetor_dot_cross",           vetor_dot_cross);
     run_test("vetor_unit_vector",         vetor_unit_vector);
+    run_test("vetor_hadamard",            vetor_hadamard);
+    run_test("color_clamp",               color_clamp);
     run_test("ponto_arithmetic",          ponto_arithmetic);
     run_test("ray_at",                    ray_at);
     run_test("camera_basis",              camera_basis);
@@ -72,7 +74,7 @@ int main(int argc, char** argv) {
     return tests::_failed > 0 ? 1 : 0;
 #endif
 
-    const std::string scenePath = argc > 1 ? argv[1] : "utils/input/sampleScene.json";
+    const std::string scenePath = argc > 1 ? argv[1] : "utils/input/test.json";
     SceneData scene_data = SceneJsonLoader::loadFile(scenePath);
 
     Ponto lookfrom = scene_data.camera.lookfrom;

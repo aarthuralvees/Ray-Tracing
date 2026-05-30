@@ -85,9 +85,18 @@ inline void write_color(std::ostream& out, const color& pixel_color) {
 
     int ir = int(255.999 * r);
     int ig = int(255.999 * g);
-    int ib = int(255.999 * b);  
+    int ib = int(255.999 * b);
 
     out << ir << ' ' << ig << ' ' << ib << '\n';
+}
+
+inline color hadamard(const color& a, const color& b) {
+    return color(a.getX() * b.getX(), a.getY() * b.getY(), a.getZ() * b.getZ());
+}
+
+inline color clamp_color(const color& c) {
+    auto cl = [](double v) { return v < 0.0 ? 0.0 : v > 1.0 ? 1.0 : v; };
+    return color(cl(c.getX()), cl(c.getY()), cl(c.getZ()));
 }
 
 #endif

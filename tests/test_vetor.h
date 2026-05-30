@@ -62,3 +62,19 @@ static void vetor_unit_vector() {
     CHECK(fabs(n.getY() - 0.8) < 1e-9);
     CHECK(fabs(n.getZ() - 0.0) < 1e-9);
 }
+
+static void vetor_hadamard() {
+    color a(0.5, 0.25, 1.0), b(0.8, 0.4, 0.5);
+    color h = hadamard(a, b);
+    CHECK(fabs(h.getX() - 0.40) < 1e-9);
+    CHECK(fabs(h.getY() - 0.10) < 1e-9);
+    CHECK(fabs(h.getZ() - 0.50) < 1e-9);
+}
+
+static void color_clamp() {
+    color over(-0.1, 0.5, 1.5);
+    color clamped = clamp_color(over);
+    CHECK(fabs(clamped.getX() - 0.0) < 1e-9);
+    CHECK(fabs(clamped.getY() - 0.5) < 1e-9);
+    CHECK(fabs(clamped.getZ() - 1.0) < 1e-9);
+}
