@@ -19,13 +19,13 @@ public:
     std::vector<Triangulo> triangulos;
     std::vector<Vetor> normais_triangulos;
     std::vector<Vetor> normais_vertices;
-    color cor;
+    MaterialData material;
 
-    MalhaTriangulos(const std::string& objPath, color cor)
-        : MalhaTriangulos(objPath, cor, Matriz4::identity()) {}
+    MalhaTriangulos(const std::string& objPath, MaterialData mat)
+        : MalhaTriangulos(objPath, mat, Matriz4::identity()) {}
 
-    MalhaTriangulos(const std::string& objPath, color cor, const Matriz4& transform)
-        : cor(cor) {
+    MalhaTriangulos(const std::string& objPath, MaterialData mat, const Matriz4& transform)
+        : material(mat) {
         loadObj(objPath);
         applyTransform(transform);
         computeNormals();
@@ -152,7 +152,7 @@ private:
         if (dot(r.direction(), normal) > 0.0) normal = -normal;
 
         rec.normal = normal;
-        rec.cor_difusa = cor;
+        rec.material = material;
         return true;
     }
 };

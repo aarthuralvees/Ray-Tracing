@@ -86,21 +86,19 @@ int main(int argc, char** argv) {
     Cena mundo;
 
     for (auto& objData : scene_data.objects) {
-        color objColor(objData.material.color.r, objData.material.color.g, objData.material.color.b);
-        
         if (objData.objType == "sphere") {
             Ponto centro = objData.getPonto("center");
             double raio = objData.getNum("radius");
-            mundo.adicionar(make_unique<Esfera>(centro, raio, objColor));
-        } 
+            mundo.adicionar(make_unique<Esfera>(centro, raio, objData.material));
+        }
         else if (objData.objType == "plane") {
-            Ponto p0 = objData.getPonto("point_on_plane"); 
+            Ponto p0 = objData.getPonto("point_on_plane");
             Vetor normal = objData.getVetor("normal");
-            mundo.adicionar(make_unique<Plano>(p0, normal, objColor));
+            mundo.adicionar(make_unique<Plano>(p0, normal, objData.material));
         }
         else if (objData.objType == "mesh") {
             std::string objPath = resolvePath(scenePath, objData.getProperty("path"));
-            mundo.adicionar(make_unique<MalhaTriangulos>(objPath, objColor, Matriz4::fromTransforms(objData.transforms)));
+            mundo.adicionar(make_unique<MalhaTriangulos>(objPath, objData.material, Matriz4::fromTransforms(objData.transforms)));
         }
     }
 

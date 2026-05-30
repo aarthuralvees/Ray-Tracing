@@ -33,7 +33,7 @@ public:
         HitRecord rec;
         
         if (hit(r, 0.001, 1000000.0, rec)) {
-            return rec.cor_difusa; 
+            return color(rec.material.color.r, rec.material.color.g, rec.material.color.b);
         }
         
         return color(0, 0, 0); 

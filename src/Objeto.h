@@ -3,12 +3,13 @@
 
 #include "Ray.h"
 #include "Vetor.h"
+#include "../utils/Scene/sceneSchema.hpp"
 
 struct HitRecord {
     double t;
     Ponto p;
     Vetor normal;
-    color cor_difusa;
+    MaterialData material;
 };
 
 class Objeto {

@@ -58,7 +58,8 @@ static void matriz_transform_order() {
 }
 
 static void malha_loads_obj_and_computes_normals() {
-    MalhaTriangulos malha(write_test_obj("ray_tracing_triangle_normals.obj"), color(0.2, 0.4, 0.6));
+    MaterialData mat; mat.color = ColorData(0.2, 0.4, 0.6);
+    MalhaTriangulos malha(write_test_obj("ray_tracing_triangle_normals.obj"), mat);
 
     CHECK(malha.vertices.size() == 3);
     CHECK(malha.triangulos.size() == 1);
@@ -69,7 +70,8 @@ static void malha_loads_obj_and_computes_normals() {
 }
 
 static void malha_hits_triangle() {
-    MalhaTriangulos malha(write_test_obj("ray_tracing_triangle_hit.obj"), color(0.2, 0.4, 0.6));
+    MaterialData mat; mat.color = ColorData(0.2, 0.4, 0.6);
+    MalhaTriangulos malha(write_test_obj("ray_tracing_triangle_hit.obj"), mat);
     Ray r(Ponto(0.25, 0.25, 1), Vetor(0, 0, -1));
     HitRecord rec;
 
@@ -79,7 +81,7 @@ static void malha_hits_triangle() {
     CHECK(close_double(rec.p.getY(), 0.25));
     CHECK(close_double(rec.p.getZ(), 0.0));
     CHECK(close_double(rec.normal.getZ(), 1.0));
-    CHECK(close_double(rec.cor_difusa.getX(), 0.2));
+    CHECK(close_double(rec.material.color.r, 0.2));
 }
 
 static void malha_applies_transform_before_hit() {
@@ -90,9 +92,10 @@ static void malha_applies_transform_before_hit() {
     translate.data = Vetor(0, 0, 2);
     transforms.push_back(translate);
 
+    MaterialData matRed; matRed.color = ColorData(1, 0, 0);
     MalhaTriangulos malha(
         write_test_obj("ray_tracing_triangle_transform.obj"),
-        color(1, 0, 0),
+        matRed,
         Matriz4::fromTransforms(transforms)
     );
 

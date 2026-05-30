@@ -7,16 +7,16 @@ class Esfera : public Objeto {
 public:
     Ponto centro;
     double raio;
-    color cor;
+    MaterialData material;
 
-    Esfera(Ponto c, double r, color cor) : centro(c), raio(r), cor(cor) {}
+    Esfera(Ponto c, double r, MaterialData mat) : centro(c), raio(r), material(mat) {}
 
     bool hit(const Ray& r, double t_min, double t_max, HitRecord& rec) const override {
         Vetor oc = r.origin() - centro;
         double a = dot(r.direction(), r.direction());
         double b = 2.0 * dot(oc, r.direction());
         double c = dot(oc, oc) - raio * raio;
-        
+
         double discriminante = b * b - 4 * a * c;
         if (discriminante < 0) return false;
 
@@ -30,8 +30,7 @@ public:
         rec.t = raiz;
         rec.p = r.at(rec.t);
         rec.normal = (rec.p - centro) / raio;
-        rec.cor_difusa = cor;
-        
+        rec.material = material;
         return true;
     }
 };
