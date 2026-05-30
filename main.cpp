@@ -102,6 +102,8 @@ int main(int argc, char** argv) {
         }
     }
 
+    mundo.setLights(scene_data.lightList, scene_data.globalLight.color);
+
     std::cout << "P3\n" << cam.hres << ' ' << cam.vres << "\n255\n";
 
     for (int j = 0; j < cam.vres; j++) {
