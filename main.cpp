@@ -98,7 +98,11 @@ int main(int argc, char** argv) {
         }
         else if (objData.objType == "mesh") {
             std::string objPath = resolvePath(scenePath, objData.getProperty("path"));
-            mundo.adicionar(make_unique<MalhaTriangulos>(objPath, objData.material, Matriz4::fromTransforms(objData.transforms)));
+            Matriz4 transform = Matriz4::fromTransforms(objData.transforms);
+            Ponto rp = objData.relativePos;
+            if (rp.getX() != 0.0 || rp.getY() != 0.0 || rp.getZ() != 0.0)
+                transform = Matriz4::translation(rp.getX(), rp.getY(), rp.getZ()) * transform;
+            mundo.adicionar(make_unique<MalhaTriangulos>(objPath, objData.material, transform));
         }
     }
 
