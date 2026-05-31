@@ -24,7 +24,7 @@ public:
     {
         W = unit_vector(C - M);
         U = unit_vector(cross(W, Vup));
-        V = cross(W, U);
+        V = cross(U, W);
     }
 
     Ray getRay(int i, int j) const {

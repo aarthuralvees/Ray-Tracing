@@ -72,12 +72,12 @@ public:
             double diff = std::max(dot(Ln, rec.normal), 0.0);
             result = result + hadamard(kd, ILn * diff);
 
-            // Specular: ks * max(Rn.V, 0)^ns * ILn
-            Vetor Rn = unit_vector(2.0 * dot(Ln, rec.normal) * rec.normal - Ln);
-            double spec = (mat.ns > 0.0)
-                ? std::pow(std::max(dot(Rn, V), 0.0), mat.ns)
-                : 0.0;
-            result = result + hadamard(ks, ILn * spec);
+            // Specular: ks * max(Rn.V, 0)^ns * ILn (only when light faces surface)
+            if (diff > 0.0 && mat.ns > 0.0) {
+                Vetor Rn = unit_vector(2.0 * dot(Ln, rec.normal) * rec.normal - Ln);
+                double spec = std::pow(std::max(dot(Rn, V), 0.0), mat.ns);
+                result = result + hadamard(ks, ILn * spec);
+            }
         }
 
         return clamp_color(result);
