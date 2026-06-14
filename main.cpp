@@ -47,6 +47,10 @@ static void run_all_tests() {
     run_test("sphere_records_front_and_back_faces", sphere_records_front_and_back_faces);
     run_test("recursive_reflection_contributes_secondary_color", recursive_reflection_contributes_secondary_color);
     run_test("recursive_refraction_contributes_secondary_color", recursive_refraction_contributes_secondary_color);
+    run_test("recursion_depth_limit_stops_secondary_rays", recursion_depth_limit_stops_secondary_rays);
+    run_test("refract_obeys_snell_law_for_oblique_ray", refract_obeys_snell_law_for_oblique_ray);
+    run_test("refract_reports_total_internal_reflection", refract_reports_total_internal_reflection);
+    run_test("test_scene_uses_entrega4_materials", test_scene_uses_entrega4_materials);
     report_tests();
 }
 #endif
