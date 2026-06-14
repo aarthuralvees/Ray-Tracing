@@ -40,7 +40,9 @@ public:
         return hit_anything;
     }
 
-    color ray_color(const Ray& r) const {
+    color ray_color(const Ray& r, int depth = 6) const {
+        if (depth <= 0) return color(0, 0, 0);
+
         HitRecord rec;
         if (!hit(r, 0.001, 1000000.0, rec)) return color(0, 0, 0);
 
@@ -49,6 +51,8 @@ public:
         color kd(mat.color.r, mat.color.g, mat.color.b);
         color ka(mat.ka.r,    mat.ka.g,    mat.ka.b);
         color ks(mat.ks.r,    mat.ks.g,    mat.ks.b);
+        color kr(mat.kr.r,    mat.kr.g,    mat.kr.b);
+        color kt(mat.kt.r,    mat.kt.g,    mat.kt.b);
         color Ia(luzAmbiente.r, luzAmbiente.g, luzAmbiente.b);
 
         // Ambient term: ka * Ia
@@ -77,6 +81,27 @@ public:
                 Vetor Rn = unit_vector(2.0 * dot(Ln, rec.normal) * rec.normal - Ln);
                 double spec = std::pow(std::max(dot(Rn, V), 0.0), mat.ns);
                 result = result + hadamard(ks, ILn * spec);
+            }
+        }
+
+        if (kr.length_squared() > 1e-12) {
+            Vetor reflected = unit_vector(reflect(unit_vector(r.direction()), rec.normal));
+            color reflected_color = ray_color(Ray(rec.p, reflected), depth - 1);
+            result = result + hadamard(kr, reflected_color);
+        }
+
+        if (kt.length_squared() > 1e-12) {
+            const double ni = mat.ni >= 1.0 ? mat.ni : 1.0;
+            const double eta_ratio = rec.front_face ? (1.0 / ni) : ni;
+            Vetor refracted;
+
+            if (refract(unit_vector(r.direction()), rec.normal, eta_ratio, refracted)) {
+                color refracted_color = ray_color(Ray(rec.p, unit_vector(refracted)), depth - 1);
+                result = result + hadamard(kt, refracted_color);
+            } else {
+                Vetor reflected = unit_vector(reflect(unit_vector(r.direction()), rec.normal));
+                color reflected_color = ray_color(Ray(rec.p, reflected), depth - 1);
+                result = result + hadamard(kt, reflected_color);
             }
         }
 

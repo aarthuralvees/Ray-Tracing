@@ -1,6 +1,7 @@
 #ifndef VETORHEADER
 #define VETORHEADER
 
+#include <algorithm>
 #include <iostream>
 #include <cmath>
 
@@ -74,6 +75,22 @@ inline Vetor cross(const Vetor& u, const Vetor& v) {
 
 inline Vetor unit_vector(const Vetor& v) {
     return v / v.length();
+}
+
+inline Vetor reflect(const Vetor& v, const Vetor& n) {
+    return v - 2.0 * dot(v, n) * n;
+}
+
+inline bool refract(const Vetor& uv, const Vetor& n, double eta_ratio, Vetor& refracted) {
+    const double cos_theta = std::min(dot(-uv, n), 1.0);
+    const Vetor r_out_perp = eta_ratio * (uv + cos_theta * n);
+    const double parallel_squared = 1.0 - r_out_perp.length_squared();
+
+    if (parallel_squared < 0.0) return false;
+
+    const Vetor r_out_parallel = -std::sqrt(parallel_squared) * n;
+    refracted = r_out_perp + r_out_parallel;
+    return true;
 }
 
 using color = Vetor;

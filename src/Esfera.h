@@ -29,7 +29,8 @@ public:
 
         rec.t = raiz;
         rec.p = r.at(rec.t);
-        rec.normal = (rec.p - centro) / raio;
+        Vetor outward_normal = (rec.p - centro) / raio;
+        rec.set_face_normal(r, outward_normal);
         rec.material = material;
         return true;
     }

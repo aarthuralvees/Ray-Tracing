@@ -21,6 +21,7 @@ using namespace std;
 #include "tests/test_ponto.h"
 #include "tests/test_camera.h"
 #include "tests/test_malha.h"
+#include "tests/test_recursion.h"
 
 static void run_all_tests() {
     run_test("vetor_arithmetic",          vetor_arithmetic);
@@ -43,6 +44,9 @@ static void run_all_tests() {
     run_test("malha_applies_transform_before_hit", malha_applies_transform_before_hit);
     run_test("scene_parser_accepts_transforms_key", scene_parser_accepts_transforms_key);
     run_test("scene_parser_reads_upvector_key", scene_parser_reads_upvector_key);
+    run_test("sphere_records_front_and_back_faces", sphere_records_front_and_back_faces);
+    run_test("recursive_reflection_contributes_secondary_color", recursive_reflection_contributes_secondary_color);
+    run_test("recursive_refraction_contributes_secondary_color", recursive_refraction_contributes_secondary_color);
     report_tests();
 }
 #endif

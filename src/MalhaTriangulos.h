@@ -149,9 +149,7 @@ private:
         if (normal.length_squared() == 0.0) normal = normais_triangulos[triIndex];
         else normal = unit_vector(normal);
 
-        if (dot(r.direction(), normal) > 0.0) normal = -normal;
-
-        rec.normal = normal;
+        rec.set_face_normal(r, normal);
         rec.material = material;
         return true;
     }

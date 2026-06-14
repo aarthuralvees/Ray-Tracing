@@ -20,8 +20,7 @@ public:
 
         rec.t = t;
         rec.p = r.at(t);
-        rec.normal = normal;
-        if (dot(r.direction(), rec.normal) > 0) rec.normal = -rec.normal;
+        rec.set_face_normal(r, normal);
         rec.material = material;
         return true;
     }
