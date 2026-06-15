@@ -82,7 +82,7 @@ int main(int argc, char** argv) {
     return tests::_failed > 0 ? 1 : 0;
 #endif
 
-    const std::string scenePath = argc > 1 ? argv[1] : "utils/input/test.json";
+    const std::string scenePath = "utils/input/test.json";
     SceneData scene_data = SceneJsonLoader::loadFile(scenePath);
 
     Ponto lookfrom = scene_data.camera.lookfrom;

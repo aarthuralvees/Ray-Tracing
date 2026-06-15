@@ -13,17 +13,21 @@ else
     CLEAN  = rm -f render test_runner image.ppm
 endif
 
+HEADERS  = $(wildcard src/*.h)
+
 all: $(EXE)
 
-$(EXE): main.cpp
+$(EXE): main.cpp $(HEADERS)
 	$(CXX) $(CXXFLAGS) main.cpp -o $(EXE)
 
-test: main.cpp
+test: main.cpp $(HEADERS)
 	$(CXX) $(CXXFLAGS) -DRUN_TESTS main.cpp -o $(TESTER)
 	$(TESTER)
 
 image: $(EXE)
-	$(RUNNER) utils/input/test.json > image.ppm
+	$(RUNNER) > image.ppm
 
 clean:
 	$(CLEAN)
+
+.PHONY: all test image clean
