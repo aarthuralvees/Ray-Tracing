@@ -10,6 +10,7 @@
 #include "src/Esfera.h"
 #include "src/Plano.h"
 #include "src/MalhaTriangulos.h"
+#include "src/SuperficieBezier.h"
 #include "src/Cena.h"
 
 #include "utils/Scene/sceneParser.cpp" 
@@ -21,6 +22,7 @@ using namespace std;
 #include "tests/test_ponto.h"
 #include "tests/test_camera.h"
 #include "tests/test_malha.h"
+#include "tests/test_bezier.h"
 #include "tests/test_recursion.h"
 
 static void run_all_tests() {
@@ -44,6 +46,10 @@ static void run_all_tests() {
     run_test("malha_applies_transform_before_hit", malha_applies_transform_before_hit);
     run_test("scene_parser_accepts_transforms_key", scene_parser_accepts_transforms_key);
     run_test("scene_parser_reads_upvector_key", scene_parser_reads_upvector_key);
+    run_test("bezier_tessellates_patch", bezier_tessellates_patch);
+    run_test("bezier_hits_planar_patch", bezier_hits_planar_patch);
+    run_test("bezier_applies_transform_before_hit", bezier_applies_transform_before_hit);
+    run_test("scene_parser_reads_bezier_resolution", scene_parser_reads_bezier_resolution);
     run_test("sphere_records_front_and_back_faces", sphere_records_front_and_back_faces);
     run_test("recursive_reflection_contributes_secondary_color", recursive_reflection_contributes_secondary_color);
     run_test("recursive_refraction_contributes_secondary_color", recursive_refraction_contributes_secondary_color);
@@ -111,6 +117,15 @@ int main(int argc, char** argv) {
             if (rp.getX() != 0.0 || rp.getY() != 0.0 || rp.getZ() != 0.0)
                 transform = Matriz4::translation(rp.getX(), rp.getY(), rp.getZ()) * transform;
             mundo.adicionar(make_unique<MalhaTriangulos>(objPath, objData.material, transform));
+        }
+        else if (objData.objType == "bezier" || objData.objType == "bezier_surface") {
+            std::string bezierPath = resolvePath(scenePath, objData.getProperty("path"));
+            int resolution = objData.numericData.count("resolution") ? objData.getInt("resolution") : 16;
+            Matriz4 transform = Matriz4::fromTransforms(objData.transforms);
+            Ponto rp = objData.relativePos;
+            if (rp.getX() != 0.0 || rp.getY() != 0.0 || rp.getZ() != 0.0)
+                transform = Matriz4::translation(rp.getX(), rp.getY(), rp.getZ()) * transform;
+            mundo.adicionar(make_unique<SuperficieBezier>(bezierPath, objData.material, resolution, transform));
         }
     }
 

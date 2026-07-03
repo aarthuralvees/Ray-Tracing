@@ -1,0 +1,56 @@
+{
+  "globalLight": [0.08, 0.08, 0.08],
+
+  "materials": {
+    "bezier_teal": {
+      "color": [0.05, 0.65, 0.75],
+      "ka": [0.05, 0.65, 0.75],
+      "ks": [0.45, 0.45, 0.45],
+      "ns": 96
+    },
+    "floor_gray": {
+      "color": [0.55, 0.55, 0.55],
+      "ka": [0.55, 0.55, 0.55],
+      "ks": [0.05, 0.05, 0.05],
+      "ns": 16
+    }
+  },
+
+  "camera": {
+    "lookfrom": [0, 0, -7],
+    "lookat": [0, 0, 0],
+    "upVector": [0, 1, 0],
+    "image_width": 500,
+    "image_height": 500,
+    "screen_distance": 1.2
+  },
+
+  "lights": [
+    {
+      "name": "Key Light",
+      "position": [0, 3, -4],
+      "color": [1.0, 1.0, 1.0]
+    }
+  ],
+
+  "objects": [
+    {
+      "name": "Curved Bezier Patch",
+      "type": "bezier",
+      "path": "bezier_patch.bez",
+      "resolution": 32,
+      "material": "bezier_teal",
+      "transforms": [
+        { "type": "rotation", "vector": [0, 0, 0] },
+        { "type": "translation", "vector": [0, 0, 0] }
+      ]
+    },
+    {
+      "name": "Background Floor",
+      "type": "plane",
+      "point_on_plane": [0, -2, 0],
+      "normal": [0, 1, 0],
+      "material": "floor_gray"
+    }
+  ]
+}
