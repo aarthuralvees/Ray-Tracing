@@ -118,7 +118,7 @@ int main(int argc, char** argv) {
                 transform = Matriz4::translation(rp.getX(), rp.getY(), rp.getZ()) * transform;
             mundo.adicionar(make_unique<MalhaTriangulos>(objPath, objData.material, transform));
         }
-        else if (objData.objType == "bezier" || objData.objType == "bezier_surface") {
+        else if (objData.objType == "bezier_surface") {
             std::string bezierPath = resolvePath(scenePath, objData.getProperty("path"));
             int resolution = objData.numericData.count("resolution") ? objData.getInt("resolution") : 16;
             Matriz4 transform = Matriz4::fromTransforms(objData.transforms);
