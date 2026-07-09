@@ -1,0 +1,25 @@
+{
+  "globalLight": [0.08, 0.08, 0.08],
+  "camera": {
+    "lookfrom": [0, 3, 8], "lookat": [0, 0.5, 0], "upVector": [0, 1, 0],
+    "image_width": 500, "image_height": 500, "screen_distance": 1.2
+  },
+  "lights": [
+    {
+      "name": "Luz de Area (teto)",
+      "position": [0, 8, 2],
+      "color": [1.0, 1.0, 1.0],
+      "radius": 1.8,
+      "samples": 64,
+      "shadow_mode": "jitter"
+    }
+  ],
+  "materials": {
+    "chao": { "color": [0.7, 0.7, 0.7], "ka": [0.7, 0.7, 0.7], "ks": [0, 0, 0], "ns": 10 },
+    "bola": { "color": [0.85, 0.3, 0.2], "ka": [0.85, 0.3, 0.2], "ks": [0.3, 0.3, 0.3], "ns": 64 }
+  },
+  "objects": [
+    { "name": "Chao", "type": "plane", "point_on_plane": [0, -1, 0], "normal": [0, 1, 0], "material": "chao" },
+    { "name": "Bola", "type": "sphere", "center": [0, 0.8, 0], "radius": 1.0, "material": "bola" }
+  ]
+}

@@ -7,12 +7,18 @@
 #include <vector>
 #include "Objeto.h"
 #include "Ray.h"
+#include "SoftShadow.h"
 
 class Cena {
 public:
     std::vector<std::unique_ptr<Objeto>> objetos;
     std::vector<LightData> luzes;
     ColorData luzAmbiente;
+
+    // Gerador aleatorio para o jitter das amostras de sombra suave.
+    // mutable porque ray_color()/fracaoVisivel() sao const mas precisam
+    // avancar o estado do RNG a cada amostragem.
+    mutable RNGSimples rng{2463534242u};
 
     Cena() : luzAmbiente(0, 0, 0) {}
 
@@ -40,6 +46,40 @@ public:
         return hit_anything;
     }
 
+    // Calcula a fracao [0,1] da area da luz que esta VISIVEL a partir de P.
+    // Dispara um raio de sombra para cada ponto amostrado sobre a area da luz
+    // e conta quantos chegam sem obstaculo. 1.0 = totalmente iluminado,
+    // 0.0 = totalmente na sombra, valores intermediarios = penumbra.
+    // Para luz pontual (radius ausente/<=0) amostra so o centro, recaindo no
+    // comportamento antigo de sombra dura.
+    double fracaoVisivel(const Ponto& P, const Vetor& normalSuperficie,
+                         const LightData& luz) const {
+        const double raio = SoftShadow::lerRaio(luz);
+        const int    n    = SoftShadow::lerNumAmostras(luz);
+        const ModoAmostra modo = SoftShadow::lerModo(luz);
+
+        // Disco de luz orientado de frente para P.
+        Vetor normalDisco = luz.pos - P;
+
+        std::vector<Ponto> amostras =
+            SoftShadow::amostrar(luz.pos, raio, normalDisco, n, modo, rng);
+
+        int visiveis = 0;
+        for (const Ponto& amostra : amostras) {
+            Vetor toSample = amostra - P;
+            double dist = toSample.length();
+            if (dist < 1e-8) { ++visiveis; continue; }  // amostra sobre P: conta como visivel
+            Vetor dir = unit_vector(toSample);
+
+            // Raio de sombra ate a amostra; deslocado por 0.001 para evitar
+            // auto-interseccao. Se nada bloqueia ate a amostra, ela e visivel.
+            HitRecord shadowRec;
+            if (!hit(Ray(P, dir), 0.001, dist - 0.001, shadowRec)) ++visiveis;
+        }
+
+        return static_cast<double>(visiveis) / static_cast<double>(amostras.size());
+    }
+
     color ray_color(const Ray& r, int depth = 6) const {
         if (depth <= 0) return color(0, 0, 0);
 
@@ -55,7 +95,6 @@ public:
         color kt(mat.kt.r,    mat.kt.g,    mat.kt.b);
         color Ia(luzAmbiente.r, luzAmbiente.g, luzAmbiente.b);
 
-        // Ambient term: ka * Ia
         color result = hadamard(ka, Ia);
 
         Vetor V = unit_vector(-r.direction());
@@ -66,21 +105,23 @@ public:
             if (distToLight < 1e-8) continue;
             Vetor Ln = unit_vector(toLight);
 
-            // Shadow: skip this light if something blocks it
-            HitRecord shadowRec;
-            if (hit(Ray(rec.p, Ln), 0.001, distToLight - 0.001, shadowRec)) continue;
+            // Sombra suave: fracao [0,1] da area da luz visivel a partir do
+            // ponto. Substitui o antigo teste binario (bloqueado/livre) por
+            // um fator continuo que gera penumbra nas bordas. Para luzes sem
+            // "radius" no JSON, vale 1 ou 0 — ou seja, sombra dura como antes.
+            double visivel = fracaoVisivel(rec.p, rec.normal, luz);
+            if (visivel <= 0.0) continue;   // totalmente na sombra: pula a luz
 
             color ILn(luz.color.r, luz.color.g, luz.color.b);
 
-            // Diffuse: kd * max(Ln.N, 0) * ILn
+            // Difuso e especular sao escalados pela fracao visivel.
             double diff = std::max(dot(Ln, rec.normal), 0.0);
-            result = result + hadamard(kd, ILn * diff);
+            result = result + hadamard(kd, ILn * (diff * visivel));
 
-            // Specular: ks * max(Rn.V, 0)^ns * ILn (only when light faces surface)
             if (diff > 0.0 && mat.ns > 0.0) {
                 Vetor Rn = unit_vector(2.0 * dot(Ln, rec.normal) * rec.normal - Ln);
                 double spec = std::pow(std::max(dot(Rn, V), 0.0), mat.ns);
-                result = result + hadamard(ks, ILn * spec);
+                result = result + hadamard(ks, ILn * (spec * visivel));
             }
         }
 
