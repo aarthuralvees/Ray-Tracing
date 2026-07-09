@@ -22,6 +22,7 @@ using namespace std;
 #include "tests/test_camera.h"
 #include "tests/test_malha.h"
 #include "tests/test_recursion.h"
+#include "tests/test_octree.h"
 
 static void run_all_tests() {
     run_test("vetor_arithmetic",          vetor_arithmetic);
@@ -51,6 +52,16 @@ static void run_all_tests() {
     run_test("refract_obeys_snell_law_for_oblique_ray", refract_obeys_snell_law_for_oblique_ray);
     run_test("refract_reports_total_internal_reflection", refract_reports_total_internal_reflection);
     run_test("test_scene_uses_entrega4_materials", test_scene_uses_entrega4_materials);
+    run_test("aabb_hit_basico",                     aabb_hit_basico);
+    run_test("aabb_origem_dentro_da_caixa",         aabb_origem_dentro_da_caixa);
+    run_test("aabb_atras_do_raio_nao_conta",        aabb_atras_do_raio_nao_conta);
+    run_test("aabb_espessura_zero_precisa_de_folga", aabb_espessura_zero_precisa_de_folga);
+    run_test("aabb_expand_engloba_pontos",          aabb_expand_engloba_pontos);
+    run_test("octree_malha_planar_acerta",          octree_malha_planar_acerta);
+    run_test("octree_retorna_mais_proximo",         octree_retorna_mais_proximo);
+    run_test("octree_miss_quando_raio_passa_longe", octree_miss_quando_raio_passa_longe);
+    run_test("octree_equivale_a_busca_linear",      octree_equivale_a_busca_linear);
+    run_test("octree_normal_bate_com_linear",       octree_normal_bate_com_linear);
     report_tests();
 }
 #endif
@@ -82,7 +93,7 @@ int main(int argc, char** argv) {
     return tests::_failed > 0 ? 1 : 0;
 #endif
 
-    const std::string scenePath = "utils/input/test.json";
+    const std::string scenePath = (argc > 1) ? argv[1] : "utils/input/demoOctree.json";
     SceneData scene_data = SceneJsonLoader::loadFile(scenePath);
 
     Ponto lookfrom = scene_data.camera.lookfrom;

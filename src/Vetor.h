@@ -86,7 +86,7 @@ inline bool refract(const Vetor& uv, const Vetor& n, double eta_ratio, Vetor& re
     const Vetor r_out_perp = eta_ratio * (uv + cos_theta * n);
     const double parallel_squared = 1.0 - r_out_perp.length_squared();
 
-    if (parallel_squared < 0.0) return false;
+    if (parallel_squared < 0.0) return false; //Reflexão Interna Total
 
     const Vetor r_out_parallel = -std::sqrt(parallel_squared) * n;
     refracted = r_out_perp + r_out_parallel;
